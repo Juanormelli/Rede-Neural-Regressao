@@ -63,3 +63,28 @@ valuesReplace = {"vehicleType":"limousine", "gearbox":"manuell",
 
 
 base= base.fillna(value = valuesReplace)
+
+
+inputs = base.iloc[:,1:13].values
+
+outputs = base.iloc[:,0].values
+
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+labelencoder_inputs = LabelEncoder()
+
+
+inputs[:,0] = labelencoder_inputs.fit_transform(inputs[:,0])
+inputs[:,1] = labelencoder_inputs.fit_transform(inputs[:,1])
+inputs[:,3] = labelencoder_inputs.fit_transform(inputs[:,3])
+inputs[:,5] = labelencoder_inputs.fit_transform(inputs[:,5])
+inputs[:,8] = labelencoder_inputs.fit_transform(inputs[:,8])
+inputs[:,9] = labelencoder_inputs.fit_transform(inputs[:,9])
+inputs[:,10] = labelencoder_inputs.fit_transform(inputs[:,10])
+
+onehotencoder = ColumnTransformer(transformers=[("OneHot", OneHotEncoder(), [0,1,3,5,8,9,10])],remainder='passthrough')
+
+inputs = onehotencoder.fit_transform(inputs).toarray()
+
+
+
