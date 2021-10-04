@@ -1,7 +1,8 @@
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
-from 
+from sklearn.model_selection import cross_val_score
+from keras.wrappers.scikit_learn import KerasRegressor
 
 base = pd.read_csv("autos.csv", encoding="ISO-8859-1")
 
@@ -88,4 +89,25 @@ onehotencoder = ColumnTransformer(transformers=[("OneHot", OneHotEncoder(), [0,1
 
 inputs = onehotencoder.fit_transform(inputs).toarray()
 
+def NewNeural():
+    regressor = Sequential()
+
+    regressor.add(Dense(units=158,activation="relu", input_dim=316))
+
+    regressor.add(Dense(units=158,activation="relu"))
+
+    regressor.add(Dense(units=1,activation="linear"))
+
+
+    regressor.compile(optimizer="adam", loss="mean_absolute_error", metrics="mean_absolute_error")
+
+    
+
+    return regressor
+
+regressor = KerasRegressor(build_fn=NewNeural, epochs=100, batch_size=300)
+
+results = cross_val_score(estimator =regressor, X=inputs,y=outputs,cv=10,scoring="neg_mean_absolute_error")
+
+mean = results.mean()
 
