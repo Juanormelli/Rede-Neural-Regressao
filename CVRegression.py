@@ -1,6 +1,7 @@
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
+from 
 
 base = pd.read_csv("autos.csv", encoding="ISO-8859-1")
 
@@ -86,28 +87,5 @@ inputs[:,10] = labelencoder_inputs.fit_transform(inputs[:,10])
 onehotencoder = ColumnTransformer(transformers=[("OneHot", OneHotEncoder(), [0,1,3,5,8,9,10])],remainder='passthrough')
 
 inputs = onehotencoder.fit_transform(inputs).toarray()
-
-
-
-
-
-regressor = Sequential()
-
-regressor.add(Dense(units=158,activation="relu", input_dim=316))
-
-regressor.add(Dense(units=158,activation="relu"))
-
-regressor.add(Dense(units=1,activation="linear"))
-
-
-regressor.compile(optimizer="adam", loss="mean_absolute_error", metrics="mean_absolute_error")
-
-regressor.fit(inputs, outputs, epochs=100, batch_size=300)
-
-predicts = regressor.predict(inputs)
-
-
-
-
 
 
